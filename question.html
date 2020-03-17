@@ -22,10 +22,12 @@
 	</head>
 	<body>
 		<div id="selectorBox">
-			<table>
-				<tr><th>Year:</th><th>Foundation/Higher</th><th>Topic</th><th>Lesson</th><th></tr>
-				<tr><td><input id="year" type="select" /></td><input id="higher" type="option"><option>Foundation</option><option>Higher</option></input></td><td><input type="select" id="topics" /><input type"select" id="lesson"/></td></tr>
-			</table>
+			<form id="selector">
+				<table border="2">
+					<tr><th>Year:</th><th>Foundation/Higher:</th><th>Topic:</th><th>Lesson:</th></tr>
+					<tr><td><select id="year" /><option></option></td><td><select id="higher"><option></option><option>Foundation</option><option>Higher</option></input></td><td><select id="topics" /><option></option></td><td><select id="lesson"/><option></option></td></tr>
+				</table>
+			</form>
 		</div>
 		<br/>
 		<div id="questions">
