@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<title>Question selector</title>
+		<script>
+			var questions = [
+// This line is for humans	[Year,	Foundation\Higher,	Topics,		Lesson,		Question]
+				["1",	"Foundation",		"Levers",	"1",		"What colour are your eyes?"],
+				["1",	"Foundation",		"Levers",	"2",		"How many hats can one person own?"],
+				["1",	"Foundation",		"Levers",	"3",		"Will the universe explode or collapse?"],
+				["1",	"Foundation",		"Acceleration",	"4",		"When does ones second life begin?"],
+				["1",	"Foundation",		"Acceleration",	"5",		"How does one become mentally/emotionally stronger?"],
+				["1",	"Foundation",		"Levity",	"6",		"Does the world tell you who you are, or do you tell the world?"],
+				["1",	"Foundation",		"Levity",	"7",		"Is Hilbert's Hotel empty or full?"],
+				["1",	"Foundation",		"Comedy",	"8",		"In the film Highlander, there can only be one... what?"],
+				["1",	"Foundation",		"Comedy",	"9",		"If people are born blind to abuse, why do so many retrain as therapists"],
+				["1",	"Foundation",		"Comedy",	"10",		"Do premature people believe 'if you snooze you lose'?"],
+				["1",	"Higher",		"Utility",	"11",		"Is it possible to stop being a walkover without becomeing a cunt?"],
+				["1",	"Higher",		"Utility",	"12",		"If everyone else is playing a cruel, vicious game, would you prefer to stay alone or learn how to play?"],
+				["1",	"Higher",		"Utility",	"13",		"Imagine you are an a relationship with an abusive partner, you can train the abuse out of them by making them cry.  Should you?"]
+			];
+		</script>
+	</head>
+	<body>
+		<div id="selectorBox">
+			<table>
+				<tr><th>Year:</th><th>Foundation/Higher</th><th>Topic</th><th>Lesson</th><th></tr>
+				<tr><td><input id="year" type="select" /></td><input id="higher" type="option"><option>Foundation</option><option>Higher</option></input></td><td><input type="select" id="topics" /><input type"select" id="lesson"/></td></tr>
+			</table>
+		</div>
+		<br/>
+		<div id="questions">
+		</div>
+	</body>
+</html>
