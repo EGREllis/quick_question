@@ -2,6 +2,8 @@
 	<head>
 		<title>Question selector</title>
 		<script>
+			var selectorHtml='<table border="2"><tr><th>Year:</th><th>Foundation/Higher:</th><th>Topic:</th><th>Lesson:</th><th>Number of questions:</th><th rowspan="2"><input type="button" value="Show questions:" onclick="execute()" /></th></tr><tr><td><select id="year" /><option></option></td><td><select id="higher"><option></option><option>Foundation</option><option>Higher</option></input></td><td><select id="topics" /><option></option></td><td><select id="lesson"/><option></option></td><td><input type="text" value="0" id="nQuestions" /></td></tr></table>';
+
 			var questions = [
 // This line is for humans	[Year,	Foundation\Higher,	Topics,		Lesson,		Question]
 				["1",	"Foundation",		"Levers",	"1",		"What colour are your eyes?"],
@@ -18,19 +20,84 @@
 				["1",	"Higher",		"Utility",	"12",		"If everyone else is playing a cruel, vicious game, would you prefer to stay alone or learn how to play?"],
 				["1",	"Higher",		"Utility",	"13",		"Imagine you are an a relationship with an abusive partner, you can train the abuse out of them by making them cry.  Should you?"]
 			];
+
+                        function isNew(arr, val) {
+                                var result = false;
+				if (arr.length == 0) {
+					return true;
+				}
+                                for (var i = 0; i < arr.length; i++) {
+                                        if (arr[i] == val) {
+                                                result = true;
+                                                break;
+                                        }
+                                }
+                                return !result;
+                        }
+
+			function getDistinctOptions(col) {
+				var result = [];
+				var current = 0;
+				for (var i = 0; i < questions.length; i++) {
+					var value = questions[i][col];
+					if (isNew(result, value)) {
+						result[current++] = value;
+					}
+				}
+				return result;
+			}
+
+			function addOptions(id, opts) {
+				var ele = document.getElementById(id);
+				for (var i = 0; i < opts.length; i++) {
+					var op = document.createElement('OPTION');
+					op.innerHTML = opts[i];
+					op.value = opts[i];
+					ele.appendChild(op);
+				}
+			}
+
+			function populateSelector() {
+				addOptions("year", getDistinctOptions(0));
+                                addOptions("topics", getDistinctOptions(2));
+                                addOptions("lesson", getDistinctOptions(3));
+			}
+
+			function start() {
+				// Called on document load
+				toggleSelector();
+			}
+
+			function toggleSelector() {
+				ele = document.getElementById("selectorTable");
+				button = document.getElementById("toggle");
+				if (button.value == "Hide") {
+					ele.innerHTML = "";
+					button.value = "Show";
+				} else if (button.value == "Show") {
+					ele.innerHTML = selectorHtml;
+					button.value = "Hide";
+					populateSelector();
+				} else {
+					alert("This should never occur!");
+				}
+			}
+
+			function execute() {
+				var ele = document.getElementById("nQuestions");
+				alert("Select "+ele.value+" questions.");
+			}
 		</script>
 	</head>
-	<body>
+	<body onload="start()">
 		<div id="selectorBox">
 			<form id="selector">
-				<table border="2">
-					<tr><th>Year:</th><th>Foundation/Higher:</th><th>Topic:</th><th>Lesson:</th></tr>
-					<tr><td><select id="year" /><option></option></td><td><select id="higher"><option></option><option>Foundation</option><option>Higher</option></input></td><td><select id="topics" /><option></option></td><td><select id="lesson"/><option></option></td></tr>
+				<table border="0">
+					<tr><td><input type="button" id="toggle" onclick="toggleSelector()" value="Show"/></td><td><div id="selectorTable"></div></td></tr>
 				</table>
 			</form>
 		</div>
 		<br/>
-		<div id="questions">
-		</div>
+		<div id="questions"></div>
 	</body>
 </html>
