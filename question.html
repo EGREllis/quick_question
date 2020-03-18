@@ -83,9 +83,75 @@
 				}
 			}
 
+			function getAllIndex() {
+				var result = [];
+				for (var i = 0; i < questions.length; i++) {
+					result[i] = i;
+				}
+				return result;
+			}
+
+			function indexFilter(validIndex, val, col) {
+				var result = [];
+				if (val == "") {
+					return validIndex;
+				}
+				for (var i = 0; i < validIndex.length; i++) {
+					if (questions[validIndex[i]][col] == val) {
+						result[result.length] = validIndex[i];
+					}
+				}
+				return result;
+			}
+
+			function selectRandomQuestions(validIndex, nQuestions) {
+				var selected = [];
+				if (nQuestions >= validIndex.length) {
+					alert("Requested more questions ("+nQuestions+") than are available ("+validIndex.length+")");
+					selected = validIndex;
+				} else {
+					while (selected.length < nQuestions) {
+						var vIndex = Math.round(Math.random() * validIndex.length);
+						if (selected.includes(vIndex)) {
+							continue;
+						} else {
+							selected[selected.length] = vIndex;
+						}
+					}
+				}
+				var result = [];
+				for (var i = 0; i < selected.length; i++) {
+					result[result.length] = questions[selected[i]][4];
+				}
+				return result;
+			}
+
+			function renderQuestions(selected) {
+				html = "<table border='2'>";
+				for (var i = 0; i < selected.length; i++) {
+					html += "<tr><td>"+selected[i]+"</td></tr>";
+				}
+				html += "</table>";
+				return html;
+			}
+
 			function execute() {
-				var ele = document.getElementById("nQuestions");
-				alert("Select "+ele.value+" questions.");
+				var nQuestions = document.getElementById("nQuestions").value;
+				var year = document.getElementById("year").value;
+				var higher = document.getElementById("higher").value;
+				var topic = document.getElementById("topics").value;
+				var lesson = document.getElementById("lesson").value;
+				var validIndex = getAllIndex();
+				validIndex = indexFilter(validIndex, year, 0);
+				validIndex = indexFilter(validIndex, higher, 1);
+				validIndex = indexFilter(validIndex, topic, 2);
+				validIndex = indexFilter(validIndex, lesson, 3);
+				alert("Valid indices: "+validIndex);
+				var selected = selectRandomQuestions(validIndex, nQuestions);
+				alert("Selected: "+selected);
+				var html = renderQuestions(selected);
+				alert("Html: "+html);
+				document.getElementById("questions").innerHTML = html;
 			}
 		</script>
 	</head>
