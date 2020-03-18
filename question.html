@@ -107,7 +107,6 @@
 			function selectRandomQuestions(validIndex, nQuestions) {
 				var selected = [];
 				if (nQuestions >= validIndex.length) {
-					alert("Requested more questions ("+nQuestions+") than are available ("+validIndex.length+")");
 					selected = validIndex;
 				} else {
 					while (selected.length < nQuestions) {
@@ -146,11 +145,8 @@
 				validIndex = indexFilter(validIndex, higher, 1);
 				validIndex = indexFilter(validIndex, topic, 2);
 				validIndex = indexFilter(validIndex, lesson, 3);
-				alert("Valid indices: "+validIndex);
 				var selected = selectRandomQuestions(validIndex, nQuestions);
-				alert("Selected: "+selected);
 				var html = renderQuestions(selected);
-				alert("Html: "+html);
 				document.getElementById("questions").innerHTML = html;
 			}
 		</script>
