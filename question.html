@@ -59,19 +59,24 @@
 
 			function addRadioOptions(id, opts) {
 				var ele = document.getElementById(id);
+				html = "";
 				for (var i = 0; i < opts.length; i++) {
 					var htmlId = opts[i] + "" + i;
-					var input = document.createElement("INPUT");
-					input.setAttribute("type", "radio");
-					input.setAttribute("id", htmlId);
-					input.setAttribute("name", id);
-					input.setAttribute("value", opts[i]);
-					var label = document.createElement("OPTION");
+					var checkBox = document.createElement("INPUT");
+					checkBox.setAttribute("type", "checkbox");
+					checkBox.setAttribute("id", htmlId);
+					checkBox.setAttribute("name", id);
+					checkBox.setAttribute("value", opts[i]);
+
+					var label = document.createElement("LABEL");
 					label.setAttribute("for", htmlId);
 					label.innerHTML = opts[i];
 
+					var lineBreak = document.createElement("BR");
+					
+					ele.appendChild(checkBox);
 					ele.appendChild(label);
-					ele.appendChild(input);
+					ele.appendChild(lineBreak);
 				}
 			}
 
@@ -117,6 +122,19 @@
 				for (var i = 0; i < validIndex.length; i++) {
 					if (questions[validIndex[i]][col] == val) {
 						result[result.length] = validIndex[i];
+					}
+				}
+				return result;
+			}
+
+			function indexRadioFilter(validIndex, radioButtons, col) {
+				var result = [];
+				for (var i = 0; i < radioButtons.length; i++) {
+					var radioButton = radioButtons[i];
+					for (var i = 0; i < validIndex.length; i++) {
+						if (questions[validIndex[i]][col] == radioButton.value) {
+							result[result.length] = validIndex[i];
+						}
 					}
 				}
 				return result;
@@ -168,12 +186,12 @@
 				var nQuestions = document.getElementById("nQuestions").value;
 				var year = document.getElementById("year").value;
 				var higher = document.getElementById("higher").value;
-				var topic = document.getElementById("topics").value;
+				var topics = document.getElementsByName("topics").value;
 				var lesson = document.getElementById("lesson").value;
 				var validIndex = getAllIndex();
 				validIndex = indexFilter(validIndex, year, 0);
 				validIndex = indexFilter(validIndex, higher, 1);
-				validIndex = indexFilter(validIndex, topic, 2);
+				validIndex = indexRadioFilter(validIndex, topics, 2);
 				validIndex = indexFilter(validIndex, lesson, 3);
 				var selected = selectRandomIndices(validIndex, nQuestions);
 				var selectedQuestions = getQuestions(selected);
