@@ -57,7 +57,7 @@
 				}
 			}
 
-			function addRadioOptions(id, opts) {
+			function addCheckBoxOptions(id, opts) {
 				var ele = document.getElementById(id);
 				html = "";
 				for (var i = 0; i < opts.length; i++) {
@@ -82,7 +82,7 @@
 
 			function populateSelector() {
 				addOptions("year", getDistinctOptions(0));
-                                addRadioOptions("topics", getDistinctOptions(2));
+                                addCheckBoxOptions("topics", getDistinctOptions(2));
                                 addOptions("lesson", getDistinctOptions(3));
 			}
 
@@ -182,11 +182,22 @@
 				return html;
 			}
 
+			function findCheckBoxes(id) {
+				var result = [];
+				var divEle = document.getElementById(id);
+				for (var i = 0; i < divEle.children.length; i++) {
+					if (divEle.children[i].type == "checkbox") {
+						result[result.length] = divEle.children[i];
+					}
+				}
+				return result;
+			}
+
 			function execute() {
 				var nQuestions = document.getElementById("nQuestions").value;
 				var year = document.getElementById("year").value;
 				var higher = document.getElementById("higher").value;
-				var topics = document.getElementsByName("topics").value;
+				var topics = findCheckBoxes("topics");
 				var lesson = document.getElementById("lesson").value;
 				var validIndex = getAllIndex();
 				validIndex = indexFilter(validIndex, year, 0);
