@@ -5,20 +5,20 @@
 			var selectorHtml='<table border="2"><tr><th>Year:</th><th>Foundation/Higher:</th><th>Topic:</th><th>Lesson:</th><th>Number of questions:</th><th rowspan="2"><input type="button" value="Show questions:" onclick="execute()" /></th></tr><tr><td><select id="year" /><option></option></td><td><select id="higher"><option></option><option>Foundation</option><option>Higher</option></input></td><td><select id="topics" /><option></option></td><td><select id="lesson"/><option></option></td><td><input type="text" value="0" id="nQuestions" /></td></tr></table>';
 
 			var questions = [
-// This line is for humans	[Year,	Foundation\Higher,	Topics,		Lesson,		Question]
-				["1",	"Foundation",		"Levers",	"1",		"What colour are your eyes?"],
-				["1",	"Foundation",		"Levers",	"2",		"How many hats can one person own?"],
-				["1",	"Foundation",		"Levers",	"3",		"Will the universe explode or collapse?"],
-				["1",	"Foundation",		"Acceleration",	"4",		"When does ones second life begin?"],
-				["1",	"Foundation",		"Acceleration",	"5",		"How does one become mentally/emotionally stronger?"],
-				["1",	"Foundation",		"Levity",	"6",		"Does the world tell you who you are, or do you tell the world?"],
-				["1",	"Foundation",		"Levity",	"7",		"Is Hilbert's Hotel empty or full?"],
-				["1",	"Foundation",		"Comedy",	"8",		"In the film Highlander, there can only be one... what?"],
-				["1",	"Foundation",		"Comedy",	"9",		"If people are born blind to abuse, why do so many retrain as therapists"],
-				["1",	"Foundation",		"Comedy",	"10",		"Do premature people believe 'if you snooze you lose'?"],
-				["1",	"Higher",		"Utility",	"11",		"Is it possible to stop being a walkover without becomeing a cunt?"],
-				["1",	"Higher",		"Utility",	"12",		"If everyone else is playing a cruel, vicious game, would you prefer to stay alone or learn how to play?"],
-				["1",	"Higher",		"Utility",	"13",		"Imagine you are an a relationship with an abusive partner, you can train the abuse out of them by making them cry.  Should you?"]
+// This line is for humans	[Year,	Foundation\Higher,	Topics,		Lesson,		Answer,			Question]
+				["1",	"Foundation",		"Levers",	"1",		"Who knows?",		"What colour are your eyes?"],
+				["1",	"Foundation",		"Levers",	"2",		"Who knows?",		"How many hats can one person own?"],
+				["1",	"Foundation",		"Levers",	"3",		"Another answer",	"Will the universe explode or collapse?"],
+				["1",	"Foundation",		"Acceleration",	"4",		"Again",		"When does ones second life begin?"],
+				["1",	"Foundation",		"Acceleration",	"5",		"?",			"How does one become mentally/emotionally stronger?"],
+				["1",	"Foundation",		"Levity",	"6",		"Guess what...",	"Does the world tell you who you are, or do you tell the world?"],
+				["1",	"Foundation",		"Levity",	"7",		"answer...",		"Is Hilbert's Hotel empty or full?"],
+				["1",	"Foundation",		"Comedy",	"8",		"another...",		"In the film Highlander, there can only be one... what?"],
+				["1",	"Foundation",		"Comedy",	"9",		"wait...",		"If people are born blind to abuse, why do so many retrain as therapists"],
+				["1",	"Foundation",		"Comedy",	"10",		"this is getting repetative",	"Do premature people believe 'if you snooze you lose'?"],
+				["1",	"Higher",		"Utility",	"11",		"but its nearly done",	"Is it possible to stop being a walkover without becomeing a cunt?"],
+				["1",	"Higher",		"Utility",	"12",		"one more...", 		"If everyone else is playing a cruel, vicious game, would you prefer to stay alone or learn how to play?"],
+				["1",	"Higher",		"Utility",	"13",		"argh....",		"Imagine you are an a relationship with an abusive partner, you can train the abuse out of them by making them cry.  Should you?"]
 			];
 
                         function isNew(arr, val) {
@@ -104,7 +104,7 @@
 				return result;
 			}
 
-			function selectRandomQuestions(validIndex, nQuestions) {
+			function selectRandomIndices(validIndex, nQuestions) {
 				var selected = [];
 				if (nQuestions >= validIndex.length) {
 					selected = validIndex;
@@ -118,9 +118,13 @@
 						}
 					}
 				}
+				return selected;
+			}
+
+			function getQuestions(selected) {
 				var result = [];
 				for (var i = 0; i < selected.length; i++) {
-					result[result.length] = questions[selected[i]][4];
+					result[result.length] = questions[selected[i]][5];
 				}
 				return result;
 			}
@@ -145,8 +149,9 @@
 				validIndex = indexFilter(validIndex, higher, 1);
 				validIndex = indexFilter(validIndex, topic, 2);
 				validIndex = indexFilter(validIndex, lesson, 3);
-				var selected = selectRandomQuestions(validIndex, nQuestions);
-				var html = renderQuestions(selected);
+				var selected = selectRandomIndices(validIndex, nQuestions);
+				var selectedQuestions = getQuestions(selected);
+				var html = renderQuestions(selectedQuestions);
 				document.getElementById("questions").innerHTML = html;
 			}
 		</script>
