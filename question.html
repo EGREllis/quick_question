@@ -2,7 +2,7 @@
 	<head>
 		<title>Question selector</title>
 		<script>
-			var selectorHtml='<table border="2"><tr><th>Year:</th><th>Foundation/Higher:</th><th>Topic:</th><th>Lesson:</th><th>Number of questions:</th><th rowspan="2"><input type="button" value="Show questions:" onclick="execute()" /></th></tr><tr><td><select id="year" /><option></option></td><td><select id="higher"><option></option><option>Foundation</option><option>Higher</option></input></td><td><select id="topics" /><option></option></td><td><select id="lesson"/><option></option></td><td><input type="text" value="0" id="nQuestions" /></td></tr></table>';
+			var selectorHtml='<table border="2"><tr><th>Year:</th><th>Foundation/Higher:</th><th>Topic:</th><th>Lesson:</th><th>Number of questions:</th><th rowspan="2"><input type="button" value="Show questions:" onclick="execute()" /></th></tr><tr><td><select id="year" /><option></option></td><td><select id="higher"><option></option><option>Foundation</option><option>Higher</option></input></td><td><div id="topics"></div></td><td><select id="lesson"/><option></option></td><td><input type="text" value="0" id="nQuestions" /></td></tr></table>';
 
 			var questions = [
 // This line is for humans	[Year,	Foundation\Higher,	Topics,		Lesson,		Answer,			Question]
@@ -57,9 +57,27 @@
 				}
 			}
 
+			function addRadioOptions(id, opts) {
+				var ele = document.getElementById(id);
+				for (var i = 0; i < opts.length; i++) {
+					var htmlId = opts[i] + "" + i;
+					var input = document.createElement("INPUT");
+					input.setAttribute("type", "radio");
+					input.setAttribute("id", htmlId);
+					input.setAttribute("name", id);
+					input.setAttribute("value", opts[i]);
+					var label = document.createElement("OPTION");
+					label.setAttribute("for", htmlId);
+					label.innerHTML = opts[i];
+
+					ele.appendChild(label);
+					ele.appendChild(input);
+				}
+			}
+
 			function populateSelector() {
 				addOptions("year", getDistinctOptions(0));
-                                addOptions("topics", getDistinctOptions(2));
+                                addRadioOptions("topics", getDistinctOptions(2));
                                 addOptions("lesson", getDistinctOptions(3));
 			}
 
@@ -125,6 +143,14 @@
 				var result = [];
 				for (var i = 0; i < selected.length; i++) {
 					result[result.length] = questions[selected[i]][5];
+				}
+				return result;
+			}
+
+			function getAnswers(selected) {
+				var result = [];
+				for (var i = 0; i < selected.length; i++) {
+					result[result.length] = questions[selected[i][4]];
 				}
 				return result;
 			}
