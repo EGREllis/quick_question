@@ -197,7 +197,6 @@
 					code += "<tr><td>"+selected[i]+"</td></tr>";
 				}
 				code += "</table>";
-				alert("RenderArray\n"+html);
 				return code;
 			}
 
@@ -207,7 +206,6 @@
 					code += "<tr><td>"+questions[i]+"</td><td>"+answers[i]+"</td></tr>";
 				}
 				code += "</table>";
-				alert("RenderArrays\n"+html);
 				return code;
 			}
 
@@ -239,16 +237,12 @@
 				var selectedAnswers = getAnswers(selected);
 				questionsHtml = renderArrayAsTable(selectedQuestions);
 				answersHtml = renderArraysAsTable(selectedQuestions, selectedAnswers);
-				alert(questionsHtml);
-				alert(answersHtml);
 				document.getElementById("questions").innerHTML = questionsHtml;
 			}
 
 			function toggleAnswers() {
 				eleDiv = document.getElementById('questions');
 				eleButton = document.getElementById('answerButton');
-				alert(questionsHtml);
-				alert(answersHtml);
 				if (eleButton.value == "Show answers") {
 					eleDiv.innerHTML = answersHtml;
 					eleButton.value = "Hide answers";
