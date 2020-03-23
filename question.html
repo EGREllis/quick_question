@@ -21,6 +21,9 @@
 				["1",	"Higher",		"Utility",	"13",		"argh....",		"Imagine you are an a relationship with an abusive partner, you can train the abuse out of them by making them cry.  Should you?"]
 			];
 
+			var questionsHtml = "";
+			var answersHtml = "";
+		
                         function isNew(arr, val) {
                                 var result = false;
 				if (arr.length == 0) {
@@ -94,12 +97,12 @@
 			function toggleSelector() {
 				ele = document.getElementById("selectorTable");
 				button = document.getElementById("toggle");
-				if (button.value == "Hide") {
+				if (button.value == "Hide selector") {
 					ele.innerHTML = "";
-					button.value = "Show";
-				} else if (button.value == "Show") {
+					button.value = "Show selector";
+				} else if (button.value == "Show selector") {
 					ele.innerHTML = selectorHtml;
-					button.value = "Hide";
+					button.value = "Hide selector";
 					populateSelector();
 				} else {
 					alert("This should never occur!");
@@ -129,11 +132,18 @@
 
 			function indexRadioFilter(validIndex, radioButtons, col) {
 				var result = [];
+				var count = [];
+				for (var i = 0; i < radioButtons.length; i++) {
+					count[i] = 0;
+				}
+
 				for (var i = 0; i < radioButtons.length; i++) {
 					var radioButton = radioButtons[i];
-					for (var i = 0; i < validIndex.length; i++) {
-						if (questions[validIndex[i]][col] == radioButton.value) {
-							result[result.length] = validIndex[i];
+					for (var j = 0; j < validIndex.length; j++) {
+						var vIndex = validIndex[j];
+						if (questions[vIndex][col] == radioButton.value && radioButton.checked) {
+							result[result.length] = vIndex;
+							count[j] += 1;
 						}
 					}
 				}
@@ -168,17 +178,34 @@
 			function getAnswers(selected) {
 				var result = [];
 				for (var i = 0; i < selected.length; i++) {
-					result[result.length] = questions[selected[i][4]];
+					result[result.length] = questions[selected[i]][4];
 				}
 				return result;
 			}
 
-			function renderQuestions(selected) {
+			function getAnswers(selected) {
+				var result = [];
+				for (var i = 0; i < selected.length; i++) {
+					result[result.length] = questions[selected[i]][4];
+				}
+				return result;
+			}
+
+			function renderArrayAsTable(selected) {
 				html = "<table border='2'>";
 				for (var i = 0; i < selected.length; i++) {
 					html += "<tr><td>"+selected[i]+"</td></tr>";
 				}
 				html += "</table>";
+				return html;
+			}
+
+			function renderArraysAsTable(questions, answers) {
+				var code = "<table border='2'>";
+				for (var i = 0; i < questions.length; i++) {
+					code += "<tr><td>"+questions[i]+"</td><td>"+answers[i]+"</td></tr>";
+				}
+				code = "</table>";
 				return html;
 			}
 
@@ -200,14 +227,29 @@
 				var topics = findCheckBoxes("topics");
 				var lesson = document.getElementById("lesson").value;
 				var validIndex = getAllIndex();
-				validIndex = indexFilter(validIndex, year, 0);
-				validIndex = indexFilter(validIndex, higher, 1);
-				validIndex = indexRadioFilter(validIndex, topics, 2);
-				validIndex = indexFilter(validIndex, lesson, 3);
-				var selected = selectRandomIndices(validIndex, nQuestions);
+				postYearIndex = indexFilter(validIndex, year, 0);
+				postHigherIndex = indexFilter(postYearIndex, higher, 1);
+				postTopicsIndex = indexRadioFilter(postHigherIndex, topics, 2);
+				postLessonIndex = indexFilter(postTopicsIndex, lesson, 3);
+
+				var selected = selectRandomIndices(postLessonIndex, nQuestions);
 				var selectedQuestions = getQuestions(selected);
-				var html = renderQuestions(selectedQuestions);
-				document.getElementById("questions").innerHTML = html;
+				var selectedAnswers = getAnswers(selected);
+				questionsHtml = renderArrayAsTable(selectedQuestions);
+				answersHtml = renderArraysAsTable(selectedQuestions, selectedAnswers);
+				document.getElementById("questions").innerHTML = questionsHtml;
+			}
+
+			function toggleAnswers() {
+				eleDiv = document.getElementById('questions');
+				eleButton = document.getElementById('answerButton');
+				if (eleButton.value == "Show answers") {
+					eleDiv.innerHTML = answersHtml;
+					eleButton.value = "Hide answers";
+				} else if (eleButton.value == "Hide answers") {
+					eleDiv.innerHTML = questionsHtml;
+					eleButton.value = "Show answers";
+				}
 			}
 		</script>
 	</head>
@@ -215,11 +257,12 @@
 		<div id="selectorBox">
 			<form id="selector">
 				<table border="0">
-					<tr><td><input type="button" id="toggle" onclick="toggleSelector()" value="Show"/></td><td><div id="selectorTable"></div></td></tr>
+					<tr><td><input type="button" id="toggle" onclick="toggleSelector()" value="Show selector"/></td><td><div id="selectorTable"></div></td></tr>
 				</table>
 			</form>
 		</div>
 		<br/>
 		<div id="questions"></div>
+		<form><input type="button" id="answerButton" onclick="toggleAnswers()" value="Show answers" /></form>
 	</body>
 </html>
