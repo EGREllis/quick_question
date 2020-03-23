@@ -192,12 +192,13 @@
 			}
 
 			function renderArrayAsTable(selected) {
-				html = "<table border='2'>";
+				var code = "<table border='2'>";
 				for (var i = 0; i < selected.length; i++) {
-					html += "<tr><td>"+selected[i]+"</td></tr>";
+					code += "<tr><td>"+selected[i]+"</td></tr>";
 				}
-				html += "</table>";
-				return html;
+				code += "</table>";
+				alert("RenderArray\n"+html);
+				return code;
 			}
 
 			function renderArraysAsTable(questions, answers) {
@@ -205,8 +206,9 @@
 				for (var i = 0; i < questions.length; i++) {
 					code += "<tr><td>"+questions[i]+"</td><td>"+answers[i]+"</td></tr>";
 				}
-				code = "</table>";
-				return html;
+				code += "</table>";
+				alert("RenderArrays\n"+html);
+				return code;
 			}
 
 			function findCheckBoxes(id) {
@@ -237,12 +239,16 @@
 				var selectedAnswers = getAnswers(selected);
 				questionsHtml = renderArrayAsTable(selectedQuestions);
 				answersHtml = renderArraysAsTable(selectedQuestions, selectedAnswers);
+				alert(questionsHtml);
+				alert(answersHtml);
 				document.getElementById("questions").innerHTML = questionsHtml;
 			}
 
 			function toggleAnswers() {
 				eleDiv = document.getElementById('questions');
 				eleButton = document.getElementById('answerButton');
+				alert(questionsHtml);
+				alert(answersHtml);
 				if (eleButton.value == "Show answers") {
 					eleDiv.innerHTML = answersHtml;
 					eleButton.value = "Hide answers";
